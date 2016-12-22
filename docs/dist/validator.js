@@ -15,7 +15,7 @@
   function getValue($el) {
     return $el.is('[type="checkbox"]') ? $el.prop('checked')                                     :
            $el.is('[type="radio"]')    ? !!$('[name="' + $el.attr('name') + '"]:checked').length :
-           $el.is('select[multiple]')  ? +$el.val() ? $el.val() : null                           :
+           $el.is('select[multiple]')  ? ($el.val() || []).length                                :
                                          $el.val()
   }
 
@@ -23,9 +23,9 @@
     this.options    = options
     this.validators = $.extend({}, Validator.VALIDATORS, options.custom)
     this.$element   = $(element)
-    this.$btn       = $('button[type="submit"], input[type="submit"]')
+    this.$btn       = $('button[type="submit"], input[type="submit"], [data-validator="submit"]')
                         .filter('[form="' + this.$element.attr('id') + '"]')
-                        .add(this.$element.find('input[type="submit"], button[type="submit"]'))
+                        .add(this.$element.find('input[type="submit"], button[type="submit"], [data-validator="submit"]'))
 
     this.update()
 
